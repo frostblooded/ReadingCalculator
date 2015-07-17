@@ -146,6 +146,7 @@ void MainWindow::submit()
             result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
         }
         else{
+            result_label->setText("Try again!");
             display_error("Please select a valid date!");
         }
     }
@@ -184,8 +185,6 @@ int MainWindow::get_days_difference()
     if(include_selected_date_check_box->isChecked()){
         date_difference++;
     }
-
-    result_label->setText(QString::number(date_difference));
 
     return date_difference;
 }
