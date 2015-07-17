@@ -9,6 +9,7 @@
 #include <ctime>
 #include <QStatusBar>
 #include <math.h>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -131,17 +132,26 @@ void MainWindow::remove_window_resize()
 
 void MainWindow::submit()
 {
-    int read_pages = read_pages_text_edit->text().toInt();
-    int all_pages = all_pages_text_edit->text().toInt();
+    if(check_pages_input()){
+        int read_pages = read_pages_text_edit->text().toInt();
+        int all_pages = all_pages_text_edit->text().toInt();
 
-    int pages_to_read = all_pages - read_pages;
-    int days_to_read = get_days_difference();
+        int pages_to_read = all_pages - read_pages;
+        int days_to_read = get_days_difference();
 
-    if(days_to_read != 0){
-        int pages_per_day = ceil(pages_to_read / days_to_read); //round upwards so that it is accurate
+        int pages_per_day;
+
+        if(days_to_read != 0){
+            pages_per_day = ceil(pages_to_read / days_to_read); //round upwards so that it is accurate
+            result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
+        }
+        else{
+            display_error("Please select a number of days other than 0!");
+        }
     }
-
-    //result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
+    else{
+        display_error("Please enter valid page count!");
+    }
 }
 
 int MainWindow::get_days_difference()
@@ -178,6 +188,30 @@ int MainWindow::get_days_difference()
     result_label->setText(QString::number(date_difference));
 
     return date_difference;
+}
+
+bool MainWindow::check_pages_input()
+{
+    QString text = read_pages_text_edit->text();
+    for(int i = 0; i < text.length(); i++){
+        if(text[i] < '0' || text[i] > '9')
+            return false;
+    }
+
+    text = all_pages_text_edit->text();
+    for(int i = 0; i < text.length(); i++){
+        if(text[i] < '0' || text[i] > '9')
+            return false;
+    }
+
+    return true;
+}
+
+void MainWindow::display_error(QString message)
+{
+    QMessageBox message_box;
+    message_box.critical(0, "Error!", message);
+    message_box.show();
 }
 
 MainWindow::~MainWindow()

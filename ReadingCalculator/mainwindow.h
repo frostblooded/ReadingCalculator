@@ -30,6 +30,8 @@ private:
     int get_days_difference();
     void clear_window();
     void remove_window_resize();
+    void display_error(QString);
+    bool check_pages_input();
 
     Ui::MainWindow *ui;
     QWidget *widget;
