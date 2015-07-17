@@ -141,16 +141,16 @@ void MainWindow::submit()
 
         int pages_per_day;
 
-        if(days_to_read != 0){
+        if(days_to_read > 0){
             pages_per_day = ceil(pages_to_read / days_to_read); //round upwards so that it is accurate
             result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
         }
         else{
-            display_error("Please select a number of days other than 0!");
+            display_error("Please select a valid date!");
         }
     }
     else{
-        display_error("Please enter valid page count!");
+        display_error("The given input is invalid!");
     }
 }
 
@@ -192,17 +192,22 @@ int MainWindow::get_days_difference()
 
 bool MainWindow::check_pages_input()
 {
-    QString text = read_pages_text_edit->text();
-    for(int i = 0; i < text.length(); i++){
-        if(text[i] < '0' || text[i] > '9')
+    //check for symbols other than numbers
+    QString checked_input = read_pages_text_edit->text();
+    for(int i = 0; i < checked_input.length(); i++){
+        if(checked_input[i] < '0' || checked_input[i] > '9')
             return false;
     }
 
-    text = all_pages_text_edit->text();
-    for(int i = 0; i < text.length(); i++){
-        if(text[i] < '0' || text[i] > '9')
+    checked_input = all_pages_text_edit->text();
+    for(int i = 0; i < checked_input.length(); i++){
+        if(checked_input[i] < '0' || checked_input[i] > '9')
             return false;
     }
+
+    //check if the pages that have been read are less than the all
+    if(read_pages_text_edit->text().toInt() >= all_pages_text_edit->text().toInt())
+        return false;
 
     return true;
 }
