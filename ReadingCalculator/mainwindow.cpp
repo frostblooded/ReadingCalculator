@@ -122,7 +122,7 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::clear_window()
 {
     this->removeToolBar(ui->mainToolBar);
-    statusBar()->hide();
+    this->statusBar()->hide();
 }
 
 void MainWindow::remove_window_resize()
@@ -161,7 +161,7 @@ int MainWindow::get_days_difference()
     int month = month_combo_box->currentIndex() + 1; //index starts 0
     int year = year_combo_box->currentText().toInt();
 
-    //slight modifications because of the way Zthe data is received
+    //slight modifications because of the way the data is received
     tm time_mark = {0, 0, 0, day, month - 1, year - 1900};
     time_t selected_date = mktime(&time_mark);
     time_t current_time = time(NULL);
