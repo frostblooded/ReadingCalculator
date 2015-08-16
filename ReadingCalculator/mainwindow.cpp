@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->setupUi(this);
 
+    this->setWindowTitle("Reading Calculator");
+
     int current_line = 0;
 
     clear_window();
@@ -143,7 +145,12 @@ void MainWindow::submit()
 
         if(days_to_read > 0){
             pages_per_day = ceil(pages_to_read / days_to_read); //round upwards so that it is accurate
-            result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
+
+            //sometimes when there are too many days, pages_per_day becomes zero, so this if fixes that
+            if(pages_per_day == 0)
+                result_label->setText("You should read less than 1 page per day");
+            else
+                result_label->setText("You should read " + QString::number(pages_per_day) + " pages per day");
         }
         else{
             result_label->setText("Try again!");
